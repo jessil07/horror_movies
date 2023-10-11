@@ -5,17 +5,21 @@
 
 # Prepare data set for app 
 
-# Output is saved to folder: \input
+# Output is saved to folder: 02_app_code\data
 
 # Jessie, October 2023 
 
 ###############################################################################.
-# Packages
+# Load packages
 library(dplyr)
 
 ###############################################################################.
+# Set working directory 
+setwd("/Users/jessieli/Desktop/Projects/movies")
+
+###############################################################################.
 # Read in data set of interest 
-movies <- read.csv(file = "movies.csv", header = TRUE) %>%
+movies <- read.csv(file = "input/movies.csv", header = TRUE) %>%
   # Remove row number field
   select(-X)
 
@@ -23,10 +27,12 @@ movies <- read.csv(file = "movies.csv", header = TRUE) %>%
 # Add additional fields representing release year and release month
 movies <- movies %>%
   mutate(release_date = as.Date(release_date, format = "%m/%d/%Y")) %>%
-  mutate(release_year = format(release_date, "%Y"), 
-         release_month = format(release_date, "%b"), 
-         .after = release_date)
+  mutate(release_year = as.numeric(format(release_date, "%Y"), .after = release_date)) 
 
+# Save as RDS file 
+saveRDS(movies, file = "02_app_code/data/movies.rds")
+
+### END OF SCRIPT ####
 
 
 
